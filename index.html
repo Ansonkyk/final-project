@@ -20,8 +20,8 @@
                 <br>
                 <input id="apikey" type="text" autocomplete="off" placeholder="apikey"><br>
                 <input id="submitnew" type="submit" /><br>
-                <button type='button' id=call>Clear all item</button>
-                <button type='button' id=print>Print this page</button>
+                <button type='button' id=call>buy</button>
+                <button type='button' id=print>sell</button>
             </form>
             <div id=stockrecommanded> Recommand AAPL</div>
         </div>
@@ -49,6 +49,7 @@
 
     <div id=trading>
         <div id=buy>Should you buy or sell?</div>
+        <div id=signal></div>
         <div id=lastyear>How much you will made if you were using this trading strategy last year</div>
         <canvas id="revennueChart" width="400" height="400"></canvas>`
     </div>
@@ -58,8 +59,7 @@
         <div id=newsanalysis>Are the news good or bad?</div>
     </div>
 
-    <canvas id="myChart" width="400" height="400"></canvas>`
-    <canvas id="myChart2" width="400" height="400"></canvas>`
+
     <script src="main.js"></script>
 </body>
 
