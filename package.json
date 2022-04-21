@@ -1,5 +1,9 @@
 {
   "dependencies": {
-    "google-finance": "^0.1.12"
+    "browserify": "^17.0.0",
+    "google-finance": "^0.1.12",
+    "prompt-sync-history": "^1.0.1",
+    "yahoo-finance": "^0.3.7",
+    "yahoo-stock-prices": "^1.1.0"
   }
 }

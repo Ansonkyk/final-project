@@ -1,3 +1,4 @@
+
 //Add event listener to form
 let Form1 = document.querySelector('#form1');
 
@@ -6,7 +7,7 @@ Form1.addEventListener("submit",function(event){
 });
 
 //Add: All the magic happen here
-function add(event){
+async function add(event){
     event.preventDefault();
     //Two value from the form
     let symbol = document.querySelector("#symbol");
@@ -16,14 +17,22 @@ function add(event){
 
    //check if the input are valid
     if (onlyLetters(stock)&&onlynumbers(investment)){
-        investment=Number(investment)
-        console.log(investment)
-        console.log(stock)
+        investment=Number(investment);
+        console.log(investment);
+        console.log(stock);
+        //Getting date for stock
         var today=dategetter();
         var startdate=lastyeardategetter();
-        console.log(today)
-        console.log(startdate)
-
+        console.log(today);
+        console.log(startdate);
+        //Geting stock data
+        let apiKey = $("#apikey").val();
+        console.log(apiKey)
+        const rawData = await fetch(
+           `https://api.polygon.io/v2/aggs/ticker/${stock}/range/1/day/${startdate}/${today}?adjusted=true&sort=asc&apiKey=${apiKey}`
+        );
+        const stockdata = await rawData.json();
+        console.log(stockdata);
 
     }else{
         alert('error input!!')
@@ -43,11 +52,11 @@ function onlyLetters(str) {
 //Date getter
 function dategetter(){
     var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
+    var dd = String(today.getDate()).padStart(2, '0')-1;
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = today.getFullYear();
     
-    today = mm + '/' + dd + '/' + yyyy;
+    today = yyyy + '-' + mm + '-' + dd;
     return today;
 }
 //Last year today
@@ -57,6 +66,6 @@ function lastyeardategetter(){
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = today.getFullYear()-1;
     
-    today = mm + '/' + dd + '/' + yyyy;
+    today = yyyy + '-' + mm + '-' + dd;
     return today;
 }
