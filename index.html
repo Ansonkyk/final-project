@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beta</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.1/chart.min.js"></script>`
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class=head>
+        <div class=userform>
+            <form id=form1>
+                <input id="symbol" type="text" autocomplete="off" placeholder="Stock symbol" /><br>
+                <input id="amount" type="text" autocomplete="off" placeholder="How much you would like to invest" />
+                <br>
+                <input id="submitnew" type="submit" /><br>
+                <button type='button' id=call>Clear all item</button>
+            </form>
+            <div id=stockrecommanded> AAPL</div>
+        </div>
+        <div class=list>
+            <div id=previousstock>
+                Previous stock
+
+            </div>
+            <div id=Highestreturn>
+                Return Ranking
+            </div>
+            <div id=Bestsuitourmethord>
+                Ranking for best return using our methord
+            </div>
+
+        </div>
+    </div>
+
+    <div id=stockinfo>
+        <div id=info>stock price (and other info</div>
+        <canvas id="stockchart" width="400" height="400"></canvas>`
+    </div>
+
+    <div id=trading>
+        <div id=buy>Should you buy or sell?</div>
+        <div id=lastyear>How much you will made if you were using this trading strategy last year</div>
+        <canvas id="revennueChart" width="400" height="400"></canvas>`
+    </div>
+
+    <div id=news>
+        <div id=newstitle>Newstitle</div>
+        <div id=newsanalysis>Are the news good or bad?</div>
+    </div>
+
+    <canvas id="myChart" width="400" height="400"></canvas>`
+    <canvas id="myChart2" width="400" height="400"></canvas>`
+    <script src="main.js"></script>
+</body>
+
+</html>
