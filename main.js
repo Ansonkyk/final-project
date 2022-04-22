@@ -10,13 +10,31 @@ Form1.addEventListener("submit",function(event){
 //Add: All the magic happen here
 async function add(event){
     event.preventDefault();
-    //if the program were run,clear canvas
-    
+    //if the program were run,clear canvas and news list
+    let list = document.getElementById("newslist");
+    let list1 = document.getElementById("RevRanking");
+    let list2 = document.getElementById("Bestsuit");
     if (firstrun==false){
+        var child = list.lastElementChild; 
         $('#stockchart').remove();
         $('#stockinfo').append('<canvas id="stockchart"></canvas>');
         $('#revennueChart').remove();
         $('#trading').append('<canvas id="revennueChart"></canvas>');
+        while (child) {
+            list.removeChild(child);
+            child = list.lastElementChild;
+        };
+        
+        var child1 = list1.lastElementChild; 
+        var child2 = list2.lastElementChild; 
+        while (child1) {
+           list1.removeChild(child1);
+           child1 = list1.lastElementChild;
+        } 
+        while (child2) {
+            list2.removeChild(child2);
+            child2 = list.lastElementChild;
+        } 
     }
     //Two value from the form
     let symbol = document.querySelector("#symbol");
@@ -52,6 +70,7 @@ async function add(event){
         document.getElementById("latestprice").innerHTML=stockclosing[stockclosing.length-1];
         var rev=(stockclosing[stockclosing.length-1]-stockclosing[0])/stockclosing[0];
         document.getElementById("lastyearrev").innerText=rev;
+        document.getElementById("SD").innerText=dev(stockclosing)
         var fakedate=[...Array(stockclosing.length).keys()];
         const data = {
             labels: fakedate,
@@ -89,6 +108,7 @@ async function add(event){
               document.getElementById('stockchart'),
               config
             );
+            //Caluclate data for next chart
             var signals=buyandsellsignal(stockclosing);
             document.getElementById("signal").innerText=(signals[signals.length-1]==1)?'buy/hold':"sell/no enter market";
             var used=simulation(stockclosing,signals,investment);
@@ -112,6 +132,7 @@ async function add(event){
           };
           
           
+          
           const config2 = {
               type: 'line',
               data: data2,
@@ -128,13 +149,56 @@ async function add(event){
               document.getElementById('revennueChart'),
               config2
             );
+        document.getElementById("SDused").innerText=dev(used)
+        //Geting stock news
+        let apiKey2 = $("#apikey2").val();
+        console.log(apiKey2)
         const rawData2 = await fetch(
-            'https://newsapi.org/v2/everything?q=bitcoin&apiKey=174b4528adfc4310bc2284cc98ab0e3b'
+            `https://newsapi.org/v2/everything?q=${stock}&apiKey=${apiKey2}`
         );
-        stocknews=[];
-        const stocknew = await rawData2.json();
-
-
+        const stocknews = await rawData2.json();
+        console.log(stocknews);
+        stocknewslist=[];
+        for (var j = 0; j < stocknews.articles.length; j++){
+            stocknewslist.push(stocknews.articles[j].title);
+            
+        }
+        console.log(stocknewslist)
+        //Puting news in to stock list
+        
+        stocknewslist.forEach((item) => {
+            let li = document.createElement("li");
+            li.innerText = item;
+            list.appendChild(li);
+        });
+        //Save stock and rev start with renew both table
+        
+        savedStockandrev = JSON.parse(localStorage.getItem('savedStockwithrev'));
+        if (savedStockandrev === null) {
+            savedStockandrev=[];
+        } 
+        
+        savedStockandrev.push({"stock":stock,"rev":rev,"bestsuit":((used[used.length-1]-used[0])/used[0])});
+        savedStockandrev.sort(function(a, b) {
+            return ((a.rev < b.rev) ? -1 : ((a.rev == b.rev) ? 0 : 1));
+        });
+  
+        savedStockandrev.forEach((item) => {
+           let li = document.createElement("li");
+           li.innerText = item.stock.concat(" ", item.rev);
+           list1.appendChild(li);
+        });
+        savedStockandrev.sort(function(a, b) {
+            return ((a.bestsuit < b.bestsuit) ? -1 : ((a.bestsuit == b.bestsuit) ? 0 : 1));
+        });
+  
+        savedStockandrev.forEach((item) => {
+           let li = document.createElement("li");
+           li.innerText = item.stock.concat(" ", item.bestsuit);
+           list2.appendChild(li);
+        });
+    //localStorage.setItem('key','value') - adds a key value pair into your local storage that will persist even after you refresh or exist the page
+    localStorage.setItem('savedStockwithrev', JSON.stringify(savedStockandrev));
 
         firstrun=false
     }else{
@@ -240,3 +304,24 @@ function simulation(prices,signal,cash){
     return totalasset;
     
 }
+
+function dev(arr){
+    // Creating the mean with Array.reduce
+    let mean = arr.reduce((acc, curr)=>{
+      return acc + curr
+    }, 0) / arr.length;
+     
+    // Assigning (value - mean) ^ 2 to every array item
+    arr = arr.map((k)=>{
+      return (k - mean) ** 2
+    })
+     
+    // Calculating the sum of updated array
+   let sum = arr.reduce((acc, curr)=> acc + curr, 0);
+    
+   // Calculating the variance
+   let variance = sum / arr.length
+    
+   // Returning the Standered deviation
+   return Math.sqrt(sum / arr.length)
+  }

@@ -8,6 +8,7 @@
     <title>Beta</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.1/chart.min.js"></script>`
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -19,22 +20,28 @@
                 <input id="amount" type="text" autocomplete="off" placeholder="How much you would like to invest" />
                 <br>
                 <input id="apikey" type="text" autocomplete="off" placeholder="apikey"><br>
+                <input id="apikey2" type="text" autocomplete="off" placeholder="apikey2"><br>
                 <input id="submitnew" type="submit" /><br>
-                <button type='button' id=call>buy</button>
-                <button type='button' id=print>sell</button>
+                
             </form>
             <div id=stockrecommanded> Recommand AAPL</div>
         </div>
         <div class=list>
             <div id=previousstock>
                 Previous stock
-
+                
             </div>
             <div id=Highestreturn>
                 Return Ranking
+                <ol id=RevRanking>
+
+                </ol>
             </div>
             <div id=Bestsuitourmethord>
                 Ranking for best return using our methord
+                <ol id=Bestsuit>
+
+                </ol>
             </div>
 
         </div>
@@ -44,6 +51,7 @@
         <div id=info>stock price (and other info</div>
         <div id=latestprice></div>
         <div id=lastyearrev></div>
+        <div id=SD></div>
         <canvas id="stockchart" width="400" height="400"></canvas>`
     </div>
 
@@ -51,12 +59,23 @@
         <div id=buy>Should you buy or sell?</div>
         <div id=signal></div>
         <div id=lastyear>How much you will made if you were using this trading strategy last year</div>
+        <div id=SDused></div>
         <canvas id="revennueChart" width="400" height="400"></canvas>`
     </div>
 
     <div id=news>
-        <div id=newstitle>Newstitle</div>
-        <div id=newsanalysis>Are the news good or bad?</div>
+        <div id=newstitle>Newstitle<br>
+            <ol id=newslist>
+
+            </ol>
+
+        </div>
+        <!-- <div id=newsanalysis>Are the news good or bad?</div> -->
+    </div>
+
+    <div id=contral>
+        <button type='button' id=call>buy</button>
+        <button type='button' id=print>sell</button>
     </div>
 
 
