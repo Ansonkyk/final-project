@@ -1,3 +1,4 @@
+//Start
 let firstrun=true;
 //Add event listener to form
 let Form1 = document.querySelector('#form1');
@@ -9,14 +10,15 @@ Form1.addEventListener("submit",function(event){
 //Add: All the magic happen here
 async function add(event){
     event.preventDefault();
-    //Two value from the form
+    //if the program were run,clear canvas
+    
     if (firstrun==false){
         $('#stockchart').remove();
         $('#stockinfo').append('<canvas id="stockchart"></canvas>');
         $('#revennueChart').remove();
         $('#trading').append('<canvas id="revennueChart"></canvas>');
     }
-
+    //Two value from the form
     let symbol = document.querySelector("#symbol");
     let amount = document.querySelector("#amount");
     let investment=amount.value;
@@ -87,11 +89,12 @@ async function add(event){
               document.getElementById('stockchart'),
               config
             );
-        var signals=buyandsellsignal(stockclosing);
-        document.getElementById("signal").innerText=(signals[signals.length-1]==1)?'buy':"sell";
-        var used=simulation(stockclosing,signals,investment);
-        console.log(used);
-        const data2 = {
+            var signals=buyandsellsignal(stockclosing);
+            document.getElementById("signal").innerText=(signals[signals.length-1]==1)?'buy/hold':"sell/no enter market";
+            var used=simulation(stockclosing,signals,investment);
+            console.log(used);
+            //Prediction graph
+            const data2 = {
             labels: fakedate,
             datasets: [{
               label: 'If our stragegy was used',
@@ -125,6 +128,11 @@ async function add(event){
               document.getElementById('revennueChart'),
               config2
             );
+        const rawData2 = await fetch(
+            'https://newsapi.org/v2/everything?q=bitcoin&apiKey=174b4528adfc4310bc2284cc98ab0e3b'
+        );
+        stocknews=[];
+        const stocknew = await rawData2.json();
 
 
 
@@ -183,7 +191,7 @@ function simpleMovingAverage(prices, window = 5) {
   
     return simpleMovingAverages;
   }
-
+//Give adive on buy or sell
 function buyandsellsignal(prices){
     var MA5=simpleMovingAverage(prices,6);
     var MA10=simpleMovingAverage(prices,9);
