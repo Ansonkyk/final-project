@@ -33,7 +33,7 @@ async function add(event){
         } 
         while (child2) {
             list2.removeChild(child2);
-            child2 = list.lastElementChild;
+            child2 = list2.lastElementChild;
         } 
     }
     //Two value from the form
@@ -180,7 +180,7 @@ async function add(event){
         
         savedStockandrev.push({"stock":stock,"rev":rev,"bestsuit":((used[used.length-1]-used[0])/used[0])});
         savedStockandrev.sort(function(a, b) {
-            return ((a.rev < b.rev) ? -1 : ((a.rev == b.rev) ? 0 : 1));
+            return ((a.rev > b.rev) ? -1 : ((a.rev == b.rev) ? 1: 0));
         });
   
         savedStockandrev.forEach((item) => {
@@ -189,7 +189,7 @@ async function add(event){
            list1.appendChild(li);
         });
         savedStockandrev.sort(function(a, b) {
-            return ((a.bestsuit < b.bestsuit) ? -1 : ((a.bestsuit == b.bestsuit) ? 0 : 1));
+            return ((a.bestsuit > b.bestsuit) ? -1 : ((a.bestsuit == b.bestsuit) ? 1 : 0));
         });
   
         savedStockandrev.forEach((item) => {
@@ -205,6 +205,167 @@ async function add(event){
         alert('error input!!')
     }
 };
+
+//Add event listener to form
+let clear = document.querySelector('#clear');
+
+clear.addEventListener("click",function(event){
+    clearhitory(event);
+    
+});
+
+function clearhitory(event){
+    event.preventDefault();
+    localStorage.setItem('savedStockwithrev', JSON.stringify([]));
+    let list1 = document.getElementById("RevRanking");
+    let list2 = document.getElementById("Bestsuit");
+    if (firstrun==false){
+        
+        $('#stockchart').remove();
+        $('#stockinfo').append('<canvas id="stockchart"></canvas>');
+        $('#revennueChart').remove();
+        $('#trading').append('<canvas id="revennueChart"></canvas>');
+        
+        
+        var child1 = list1.lastElementChild; 
+        var child2 = list2.lastElementChild; 
+        while (child1) {
+           list1.removeChild(child1);
+           child1 = list1.lastElementChild;
+        } 
+        while (child2) {
+            list2.removeChild(child2);
+            child2 = list2.lastElementChild;
+        } 
+    }
+}
+
+
+//Add buy and sell function
+//Add event listener to form
+let buy = document.querySelector('#buy');
+let sell = document.querySelector('#sell');
+buy.addEventListener("click",function(event){
+    buystock(event);
+    
+    
+});
+
+sell.addEventListener("click",function(event){
+    sellstock(event);
+    
+});
+
+async function buystock(event){
+    event.preventDefault()
+    
+    //grab user input
+    let symbol = document.querySelector("#symbol");
+    let amount = document.querySelector("#amount");
+    let investment=Number(amount.value);
+    let stock=symbol.value;
+    var today=dategetter();
+    var startdate=lastyeardategetter();
+    let apiKey = $("#apikey").val();
+        console.log(apiKey)
+        const rawData = await fetch(
+           `https://api.polygon.io/v2/aggs/ticker/${stock}/range/1/day/${startdate}/${today}?adjusted=true&sort=asc&apiKey=${apiKey}`
+        );
+    stockclosing=[];
+    const stockdata = await rawData.json();
+    console.log(stockdata);
+    for (var j = 0; j < stockdata.results.length; j++){
+        stockclosing.push(stockdata.results[j].c);
+            
+    }
+    console.log(stockclosing)
+    //Output some of the highlight
+    var latestprice=stockclosing[stockclosing.length-1];
+    holding = JSON.parse(localStorage.getItem('holding'));
+    if (holding === null) {
+        holding=[];
+    } 
+    holding.push({"stock":stock,"price":latestprice,"amount":latestprice/investment,"date":today});
+    alert(`You bought ${latestprice/investment} of ${stock} for ${latestprice} per share`)
+    $('#stockholding').remove();
+    $('#previousstock').append('<ul id="stockholding"></ul>');
+    var list3=document.getElementById("stockholding");
+    holding.forEach((item) => {
+        let li = document.createElement("li");
+        li.innerText = item
+        list3.appendChild(li);
+    });
+    localStorage.setItem('holding', JSON.stringify(holding));
+       
+
+};
+async function sellstock(event){
+    let list3=document.getElementById("stockholding");
+    holding.forEach((item) => {
+        let li = document.createElement("li");
+        li.innerText = item
+        list3.appendChild(li);
+    });
+    let symbol = document.querySelector("#symbol");
+    let amount = document.querySelector("#amount");
+    let investment=Number(amount.value);
+    let stock=symbol.value;
+    var today=dategetter();
+    var startdate=lastyeardategetter();
+    let apiKey = $("#apikey").val();
+    console.log(apiKey)
+    const rawData = await fetch(
+        `https://api.polygon.io/v2/aggs/ticker/${stock}/range/1/day/${startdate}/${today}?adjusted=true&sort=asc&apiKey=${apiKey}`
+    );
+    stockclosing=[];
+    const stockdata = await rawData.json();
+    console.log(stockdata);
+    for (var j = 0; j < stockdata.results.length; j++){
+        stockclosing.push(stockdata.results[j].c);
+            
+    }
+    console.log(stockclosing)
+    //Output some of the highlight
+    var latestprice=stockclosing[stockclosing.length-1];
+    holding = JSON.parse(localStorage.getItem('holding'));
+    if (holding === null) {
+        alert("Sorry, this stock was not bought,error1")
+        return;
+    } 
+    let c=0;
+    for(i=0;i<holding.length;i++){
+        if (holding[i].stock==stock){
+            c=i;
+            break;
+        }else{
+            c++;
+        }
+
+    }
+    if (c=holding.length-1){alert("Sorry, this stock was not bought,error2");return;};
+    let stockbuyingprice=holding[c].price;
+    let rev=(latestprice-stockbuyingprice)*holding[c].amount;
+    alert(rev>0?`You gain ${rev} on ${stock}!!`:`You lose ${rev} on ${stock}, Good luck next time`);
+    holding = holding.splice(c,1);
+ 
+    holding.forEach((item) => {
+        let li = document.createElement("li");
+        li.innerText = item
+        list3.appendChild(li);
+    });
+
+
+    $('#stockholding').remove();
+    $('#previousstock').append('<ul id="stockholding"></ul>');
+    list3=document.getElementById("stockholding");
+    holding.forEach((item) => {
+        let li = document.createElement("li");
+        li.innerText = item
+        list3.appendChild(li);
+    });
+    localStorage.setItem('holding', JSON.stringify(holding));
+}
+
 
 
 
@@ -325,3 +486,4 @@ function dev(arr){
    // Returning the Standered deviation
    return Math.sqrt(sum / arr.length)
   }
+
