@@ -8,4 +8,20 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-gap: 20px;
+
+}
+
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 18px;
+    justify-content:space-around;
+    background-color: pink;
+}
+
+#stockinfo{
+    background-color:skyblue;
+
 }
