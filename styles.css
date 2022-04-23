@@ -45,3 +45,24 @@ body {
     flex-direction: column;
 
 }
+
+#Bestsuitourmethord{
+    border-style: dotted solid;
+    border-color: black;
+    border-width: thin;
+    transition: width 2s;
+}
+
+#Highestreturn{
+    border-style: dotted solid;
+    border-color: black;
+    border-width: thin;
+    transition: width 2s;
+}
+
+#stockrecommanded{
+    border-radius: 25px;
+    background: #73AD21;
+    padding: 20px; 
+    width:50%;
+}
