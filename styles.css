@@ -22,6 +22,26 @@ body {
 }
 
 #stockinfo{
+    width:100%;
     background-color:skyblue;
+    display: flex;
+    flex-direction: column;
+}
+#trading{
+    display: flex;
+    flex-direction: column;
+    width:100%;
+}
+
+#contral{
+    background-color: green;
+
+}
+
+#news{
+    width:100%;
+    background-color:yellow;
+    display: flex;
+    flex-direction: column;
 
 }

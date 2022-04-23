@@ -88,6 +88,7 @@ async function add(event) {
                 borderWidth: 1
             }]
         };
+        
 
 
         const config = {
@@ -96,7 +97,7 @@ async function add(event) {
             options: {
                 scales: {
                     y: {
-                        beginAtZero: true
+                        beginAtZero: false
                     }
                 }
             },
@@ -107,10 +108,11 @@ async function add(event) {
         const myChart = new Chart(
             document.getElementById('stockchart'),
             config
+            
         );
         //Caluclate data for next chart
         var signals = buyandsellsignal(stockclosing);
-        document.getElementById("signal").innerText = (signals[signals.length - 1] == 1) ? 'buy/hold' : "sell/no enter market";
+        document.getElementById("signal").innerText = (signals[signals.length - 1] == 1) ? 'buy/hold' : "sell/not enter market";
         var used = simulation(stockclosing, signals, investment);
         console.log(used);
         //Prediction graph
@@ -139,7 +141,7 @@ async function add(event) {
             options: {
                 scales: {
                     y: {
-                        beginAtZero: true
+                        beginAtZero: false
                     }
                 }
             },
@@ -149,6 +151,7 @@ async function add(event) {
             document.getElementById('revennueChart'),
             config2
         );
+        document.getElementById("usedrev").innerText =((used[used.length - 1] - used[0]) / used[0])
         document.getElementById("SDused").innerText = dev(used)
         //Geting stock news
         let apiKey2 = $("#apikey2").val();
@@ -314,11 +317,6 @@ async function buystock(event) {
 };
 async function sellstock(event) {
     let list3 = document.getElementById("stockholding");
-    holding.forEach((item) => {
-        let li = document.createElement("li");
-        li.innerText = item
-        list3.appendChild(li);
-    });
     let symbol = document.querySelector("#symbol");
     let stock = symbol.value;
     var today = dategetter();
@@ -341,6 +339,7 @@ async function sellstock(event) {
     holding = JSON.parse(localStorage.getItem('holding'));
     console.log(holding)
     if (holding === null) {
+        holding=[];
         alert("Sorry, this stock was not bought,error1")
         return;
     }
@@ -351,8 +350,9 @@ async function sellstock(event) {
             c=i;
             let stockbuyingprice = holding[c].price;
             let rev = (latestprice - stockbuyingprice) * holding[c].amount;
-            alert(rev > 0 ? `You gain ${rev} on ${stock}!!` : `You lose ${rev} on ${stock}, Good luck next time`);
-            holding = holding.splice(c, 1);
+            alert(rev > 0 ? `You gain ${rev} on ${holding[i].stock}!!` : `You lose ${rev} on ${holding[i].stock}, Good luck next time`);
+            holding.splice(c, 1);
+            console.log(holding)
             used=true;
             break;   
         } else {
@@ -360,14 +360,8 @@ async function sellstock(event) {
         }
 
     }
-    if (used=false) { alert("Sorry, this stock was not bought,error2"); return; };
+    if (used==false) { alert("Sorry, this stock was not bought,error2"); return; };
     
-
-    holding.forEach((item) => {
-        let li = document.createElement("li");
-        li.innerText = `Stock:${item.stock},Average Price:${item.price},Number of stock:${item.amount}`
-        list3.appendChild(li);
-    });
 
 
     $('#stockholding').remove();
@@ -375,7 +369,7 @@ async function sellstock(event) {
     list3 = document.getElementById("stockholding");
     holding.forEach((item) => {
         let li = document.createElement("li");
-        li.innerText = item
+        li.innerText = `Stock:${item.stock},Average Price:${item.price},Number of stock:${item.amount}`
         list3.appendChild(li);
     });
 

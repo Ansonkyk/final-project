@@ -52,17 +52,31 @@
 
     <div id=stockinfo>
         <div id=info>stock price (and other info</div>
-        <div id=latestprice></div>
-        <div id=lastyearrev></div>
-        <div id=SD></div>
+        <div>
+            <h4>Latest adjusted closing:</h4><div id=latestprice></div>
+        </div>
+        <div>
+            <h4>Latest your revenue % if you hold it for a year:</h4><div id=lastyearrev></div>
+        </div>
+        <div>
+            <h4>Standard deviation:</h4><div id=SD></div>
+        </div>
+        <div><h2>Chart for last year stock price movement</h2></div>
         <canvas id="stockchart" width="400" height="400"></canvas>`
     </div>
 
     <div id=trading>
         <div id=random>Should you buy or sell?</div>
-        <div id=signal></div>
-        <div id=lastyear>How much you will made if you were using this trading strategy last year</div>
-        <div id=SDused></div>
+        <div>
+            My personal adive:<div id=signal></div>
+        </div>
+        <div id=lastyear>
+            How much you will made if you were using this trading strategy last year:<div id=usedrev></div>
+        </div>
+        <div id=lastyearsd>
+            deviation:<div id=SDused></div>(This this our advantage)
+        </div>
+        
         <canvas id="revennueChart" width="400" height="400"></canvas>`
     </div>
 
@@ -77,6 +91,7 @@
     </div>
 
     <div id=contral>
+        So, Do you want to buy or sell this stock?
         <button type='button' id=buy>buy</button>
         <button type='button' id=sell>sell</button>
         <button type='button' id=killswitch>Clean website(testuseonly)</button>
