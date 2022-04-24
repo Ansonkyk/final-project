@@ -1,5 +1,42 @@
 //Start
-let firstrun = true;
+let firstrun = false;
+let list1 = document.getElementById("RevRanking");
+let list2 = document.getElementById("Bestsuit");
+savedStockandrev = JSON.parse(localStorage.getItem('savedStockwithrev'));
+if (savedStockandrev === null) {
+    savedStockandrev = [];
+    firstrun=true;
+}
+savedStockandrev.sort(function (a, b) {
+    return ((a.rev > b.rev) ? -1 : ((a.rev == b.rev) ? 1 : 0));
+});
+
+savedStockandrev.forEach((item) => {
+    let li = document.createElement("li");
+    li.innerText = item.stock.concat(" ", item.rev);
+    list1.appendChild(li);
+});
+savedStockandrev.sort(function (a, b) {
+    return ((a.bestsuit > b.bestsuit) ? -1 : ((a.bestsuit == b.bestsuit) ? 1 : 0));
+});
+
+savedStockandrev.forEach((item) => {
+    let li = document.createElement("li");
+    li.innerText = item.stock.concat(" ", item.bestsuit);
+    list2.appendChild(li);
+});
+holding = JSON.parse(localStorage.getItem('holding'));
+if (holding === null) {
+    holding = [];
+    firstrun=true;
+}
+list3 = document.getElementById("stockholding");
+holding.forEach((item) => {
+    let li = document.createElement("li");
+    li.innerText = `Stock:${item.stock},Average Price:${item.price},Number of stock:${item.amount}`
+    list3.appendChild(li);
+});
+
 //Add event listener to form
 let Form1 = document.querySelector('#form1');
 
@@ -88,7 +125,7 @@ async function add(event) {
                 borderWidth: 1
             }]
         };
-        
+
 
 
         const config = {
@@ -108,7 +145,7 @@ async function add(event) {
         const myChart = new Chart(
             document.getElementById('stockchart'),
             config
-            
+
         );
         //Caluclate data for next chart
         var signals = buyandsellsignal(stockclosing);
@@ -151,7 +188,7 @@ async function add(event) {
             document.getElementById('revennueChart'),
             config2
         );
-        document.getElementById("usedrev").innerText =((used[used.length - 1] - used[0]) / used[0])
+        document.getElementById("usedrev").innerText = ((used[used.length - 1] - used[0]) / used[0])
         document.getElementById("SDused").innerText = dev(used)
         //Geting stock news
         let apiKey2 = $("#apikey2").val();
@@ -289,7 +326,7 @@ async function buystock(event) {
             holding[i].price = (holding[i].price * holding[i].amount + investment) / (holding[i].amount + investment / latestprice);
             //Update amount
             holding[i].amount += investment / latestprice;
-            alert(`You bought ${investment/latestprice } of ${stock} for ${latestprice} per share,new total stock is ${holding[i].amount} with average of ${holding[i].price}`);
+            alert(`You bought ${investment / latestprice} of ${stock} for ${latestprice} per share,new total stock is ${holding[i].amount} with average of ${holding[i].price}`);
             founded = true;
             break;
         }
@@ -339,29 +376,29 @@ async function sellstock(event) {
     holding = JSON.parse(localStorage.getItem('holding'));
     console.log(holding)
     if (holding === null) {
-        holding=[];
+        holding = [];
         alert("Sorry, this stock was not bought,error1")
         return;
     }
     let c = 1;
-    let used=false;
+    let used = false;
     for (i = 0; i < holding.length; i++) {
         if (holding[i].stock == stock) {
-            c=i;
+            c = i;
             let stockbuyingprice = holding[c].price;
             let rev = (latestprice - stockbuyingprice) * holding[c].amount;
             alert(rev > 0 ? `You gain ${rev} on ${holding[i].stock}!!` : `You lose ${rev} on ${holding[i].stock}, Good luck next time`);
             holding.splice(c, 1);
             console.log(holding)
-            used=true;
-            break;   
+            used = true;
+            break;
         } else {
             c++;
         }
 
     }
-    if (used==false) { alert("Sorry, this stock was not bought,error2"); return; };
-    
+    if (used == false) { alert("Sorry, this stock was not bought,error2"); return; };
+
 
 
     $('#stockholding').remove();
@@ -501,6 +538,9 @@ let killall = document.getElementById("killswitch");
 killall.addEventListener("click", function (event) {
     localStorage.clear();
 });
+
+
+
 
 
 
