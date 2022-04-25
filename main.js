@@ -194,7 +194,7 @@ async function add(event) {
         let apiKey2 = $("#apikey2").val();
         console.log(apiKey2)
         const rawData2 = await fetch(
-            `https://cors.io/?https://newsapi.org/v2/everything?q=${stock}&apiKey=${apiKey2}`
+            `https://newsapi.org/v2/everything?q=${stock}&apiKey=${apiKey2}`
         );
         const stocknews = await rawData2.json();
         console.log(stocknews);
