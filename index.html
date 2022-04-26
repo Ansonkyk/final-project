@@ -10,17 +10,17 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
 </head>
 
 <body>
     <div class=head>
         <div class=userform>
             <form id=form1>
-                <label for="symbol">Stock id:(all cap)</label>
+                <label for="symbol">Stock id thtat you are interested in:(all cap)</label>
                 <input id="symbol" type="text" autocomplete="off" placeholder="Stock symbol" class="form-control" /><br>
-                <label for="amount">Amount consider to invest:</label>
+                <label for="amount">Amount consider to invest:(Cash)</label>
                 <input id="amount" type="text" autocomplete="off" placeholder="How much you would like to invest"
                     class="form-control" />
                 <br>
@@ -29,7 +29,7 @@
                 <input id="submitnew" class="btn btn-success" type="submit" /><br>
 
             </form>
-            <div id=stockrecommanded> Recommand AAPL JNJ TWTR T <br>for testing</div>
+            <div id=stockrecommanded> Recommand AAPL JNJ TWTR T BP <br>for testing</div>
         </div>
         <div class="list container">
             
@@ -57,6 +57,10 @@
             <div class="row">
                 <button type='button' id=clear class="btn btn-danger">Clear history</button>
             </div>
+            <div>
+                <-For this button, you can clear your search history; the two lists on top will showcase your search history.<br>
+                    They will not cancel each other out; their return will capture at the time of such, which will not update itself; the user should consider clearing this daily.
+            </div>
 
         </div>
     </div>
@@ -65,15 +69,15 @@
         <div id=info>stock price (and other info</div>
         <div>
             <h4>Latest adjusted closing:</h4>
-            <div id=latestprice></div>
+            <div id=latestprice>NULL</div>
         </div>
         <div>
             <h4>Latest your revenue % if you hold it for a year:</h4>
-            <div id=lastyearrev></div>
+            <div id=lastyearrev>NULL</div>
         </div>
         <div>
             <h4>Standard deviation:</h4>
-            <div id=SD></div>
+            <div id=SD>NULL</div>
         </div>
         <div>
             <h2>Chart for last year stock price movement</h2>
@@ -84,13 +88,13 @@
     <div id=trading>
         <div id=random>Should you buy or sell?</div>
         <div>
-            My personal adive:<div id=signal></div>
+            My personal adive:<div id=signal>NULL</div>
         </div>
         <div id=lastyear>
-            How much you will made if you were using this trading strategy last year:<div id=usedrev></div>
+            How much you will made if you were using this trading strategy last year:<div id=usedrev>NULL</div>
         </div>
         <div id=lastyearsd>
-            deviation:<div id=SDused></div>(This this our advantage)
+            deviation:<div id=SDused>NULL</div>(This this our advantage)
         </div>
 
         <canvas id="revennueChart" width="400" height="400"></canvas>`

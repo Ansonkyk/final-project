@@ -6,7 +6,7 @@ let list2 = document.getElementById("Bestsuit");
 savedStockandrev = JSON.parse(localStorage.getItem('savedStockwithrev'));
 if (savedStockandrev === null) {
     savedStockandrev = [];
-    firstrun=true;
+    firstrun = true;
 }
 savedStockandrev.sort(function (a, b) {
     return ((a.rev > b.rev) ? -1 : ((a.rev == b.rev) ? 1 : 0));
@@ -29,12 +29,12 @@ savedStockandrev.forEach((item) => {
 holding = JSON.parse(localStorage.getItem('holding'));
 if (holding === null) {
     holding = [];
-    firstrun=true;
+    firstrun = true;
 }
 list3 = document.getElementById("stockholding");
 holding.forEach((item) => {
     let li = document.createElement("li");
-    li.innerText = `Stock:${item.stock},Average Price:${Math.round(item.price*100)/100},Number of stock:${Math.round(item.amount*100)/100}`
+    li.innerText = `Stock:${item.stock},Average Price:${Math.round(item.price * 100) / 100},Number of stock:${Math.round(item.amount * 100) / 100}`
     list3.appendChild(li);
 });
 
@@ -350,7 +350,7 @@ async function buystock(event) {
 
     holding.forEach((item) => {
         let li = document.createElement("li");
-        li.innerText = `Stock:${item.stock},Average Price:${Math.round(item.price*100)/100},Number of stock:${Math.round(item.amount*100)/100}`
+        li.innerText = `Stock:${item.stock},Average Price:${Math.round(item.price * 100) / 100},Number of stock:${Math.round(item.amount * 100) / 100}`
         list3.appendChild(li);
     });
     console.log(holding)
@@ -412,7 +412,7 @@ async function sellstock(event) {
     list3 = document.getElementById("stockholding");
     holding.forEach((item) => {
         let li = document.createElement("li");
-        li.innerText = `Stock:${item.stock},Average Price:${Math.round(item.price*100)/100},Number of stock:${Math.round(item.amount*100)/100}`
+        li.innerText = `Stock:${item.stock},Average Price:${Math.round(item.price * 100) / 100},Number of stock:${Math.round(item.amount * 100) / 100}`
         list3.appendChild(li);
     });
 
@@ -539,7 +539,7 @@ function dev(arr) {
     // Returning the Standered deviation
     return Math.sqrt(sum / arr.length)
 }
-
+// A last resort funtion in testing to kill all localstorage
 let killall = document.getElementById("killswitch");
 killall.addEventListener("click", function (event) {
     localStorage.clear();
