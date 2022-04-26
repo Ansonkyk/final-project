@@ -1,5 +1,6 @@
-//Start
+//Start with updated the graph from locla storage data
 let firstrun = false;
+//declare chart
 let list1 = document.getElementById("RevRanking");
 let list2 = document.getElementById("Bestsuit");
 savedStockandrev = JSON.parse(localStorage.getItem('savedStockwithrev'));
@@ -33,7 +34,7 @@ if (holding === null) {
 list3 = document.getElementById("stockholding");
 holding.forEach((item) => {
     let li = document.createElement("li");
-    li.innerText = `Stock:${item.stock},Average Price:${item.price},Number of stock:${item.amount}`
+    li.innerText = `Stock:${item.stock},Average Price:${Math.round(item.price*100)/100},Number of stock:${Math.round(item.amount*100)/100}`
     list3.appendChild(li);
 });
 
@@ -90,11 +91,13 @@ async function add(event) {
         console.log(today);
         console.log(startdate);
         //Geting stock data
+
         let apiKey = $("#apikey").val();
         console.log(apiKey)
         const rawData = await fetch(
             `https://api.polygon.io/v2/aggs/ticker/${stock}/range/1/day/${startdate}/${today}?adjusted=true&sort=asc&apiKey=${apiKey}`
         );
+        //This api us used to grab sock data on daily bases
         stockclosing = [];
         const stockdata = await rawData.json();
         console.log(stockdata);
@@ -109,6 +112,7 @@ async function add(event) {
         document.getElementById("lastyearrev").innerText = rev;
         document.getElementById("SD").innerText = dev(stockclosing)
         var fakedate = [...Array(stockclosing.length).keys()];
+        //Plot last year price
         const data = {
             labels: fakedate,
             datasets: [{
@@ -193,6 +197,7 @@ async function add(event) {
         //Geting stock news
         let apiKey2 = $("#apikey2").val();
         console.log(apiKey2)
+        //This api will grab stock data
         const rawData2 = await fetch(
             `https://newsapi.org/v2/everything?q=${stock}&apiKey=${apiKey2}`
         );
@@ -246,19 +251,20 @@ async function add(event) {
     }
 };
 
-//Add event listener to form
+//Add event listener to clear button
 let clear = document.querySelector('#clear');
 
 clear.addEventListener("click", function (event) {
     clearhitory(event);
 
 });
-
+// this botton is created to delete all browsing history
 function clearhitory(event) {
     event.preventDefault();
     localStorage.setItem('savedStockwithrev', JSON.stringify([]));
     let list1 = document.getElementById("RevRanking");
     let list2 = document.getElementById("Bestsuit");
+    //update list
     if (firstrun == false) {
         var child1 = list1.lastElementChild;
         var child2 = list2.lastElementChild;
@@ -344,7 +350,7 @@ async function buystock(event) {
 
     holding.forEach((item) => {
         let li = document.createElement("li");
-        li.innerText = `Stock:${item.stock},Average Price:${item.price},Number of stock:${item.amount}`
+        li.innerText = `Stock:${item.stock},Average Price:${Math.round(item.price*100)/100},Number of stock:${Math.round(item.amount*100)/100}`
         list3.appendChild(li);
     });
     console.log(holding)
@@ -406,7 +412,7 @@ async function sellstock(event) {
     list3 = document.getElementById("stockholding");
     holding.forEach((item) => {
         let li = document.createElement("li");
-        li.innerText = `Stock:${item.stock},Average Price:${item.price},Number of stock:${item.amount}`
+        li.innerText = `Stock:${item.stock},Average Price:${Math.round(item.price*100)/100},Number of stock:${Math.round(item.amount*100)/100}`
         list3.appendChild(li);
     });
 

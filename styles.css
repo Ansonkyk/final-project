@@ -8,9 +8,14 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-gap: 20px;
+    
 
 }
-
+.row{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 body {
     margin: 0;
     display: flex;
@@ -18,14 +23,15 @@ body {
     align-items: center;
     font-size: 18px;
     justify-content:space-around;
-    background-color: pink;
+    background-color:#ffc6ff;
 }
 
 #stockinfo{
     width:100%;
-    background-color:skyblue;
+    background-color:#bdb2ff;
     display: flex;
     flex-direction: column;
+    
 }
 #trading{
     display: flex;
@@ -34,13 +40,13 @@ body {
 }
 
 #contral{
-    background-color: green;
+    background-color: #a0c4ff;
 
 }
 
 #news{
     width:100%;
-    background-color:yellow;
+    background-color:#9bf6ff;
     display: flex;
     flex-direction: column;
 
@@ -48,14 +54,14 @@ body {
 
 #Bestsuitourmethord{
     border-style: dotted solid;
-    border-color: black;
+    border-color: #caffbf;
     border-width: thin;
     transition: width 2s;
 }
 
 #Highestreturn{
     border-style: dotted solid;
-    border-color: black;
+    border-color: #9bf6ff;
     border-width: thin;
     transition: width 2s;
 }
@@ -65,4 +71,9 @@ body {
     background: #73AD21;
     padding: 20px; 
     width:50%;
+}
+
+.intro{
+    font-style: italic;
+    text-align-last: center;
 }
