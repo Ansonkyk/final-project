@@ -11,7 +11,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/toxicity"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/universal-sentence-encoder"></script>
 </head>
 
 <body>
@@ -34,7 +36,7 @@
         <div class="list container">
             
                 <div id=previousstock>
-                    Previous stock
+                    stock holding
                     <ul id=stockholding>
 
                     </ul>
@@ -72,7 +74,7 @@
             <div id=latestprice>NULL</div>
         </div>
         <div>
-            <h4>Latest your revenue % if you hold it for a year:</h4>
+            <h4>your revenue % if you hold it for a year:</h4>
             <div id=lastyearrev>NULL</div>
         </div>
         <div>
@@ -86,22 +88,22 @@
     </div>
 
     <div id=trading>
-        <div id=random>Should you buy or sell?</div>
+        <div id=random><h3>Should you buy or sell?</h3></div>
         <div>
-            My personal adive:<div id=signal>NULL</div>
+            <h3>My personal adive:</h3><div id=signal>NULL</div>
         </div>
         <div id=lastyear>
-            How much you will made if you were using this trading strategy last year:<div id=usedrev>NULL</div>
+            <h3>How much you will made if you were using this trading strategy last year:</h3><div id=usedrev>NULL</div>
         </div>
         <div id=lastyearsd>
-            deviation:<div id=SDused>NULL</div>(This this our advantage)
+            <h3>deviation:</h3><div id=SDused>NULL</div>(This this our advantage)
         </div>
 
         <canvas id="revennueChart" width="400" height="400"></canvas>`
     </div>
 
     <div id=news>
-        <div id=newstitle>Newstitle<br>
+        <div id=newstitle>Newstitle(how close does it relate to stock performance)<br>
             <ol id=newslist>
 
             </ol>

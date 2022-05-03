@@ -1,5 +1,6 @@
-//Start with updated the graph from locla storage data
+//Start with updated the graph from local storage data
 let firstrun = false;
+const threshold = 0.9;
 //declare chart
 let list1 = document.getElementById("RevRanking");
 let list2 = document.getElementById("Bestsuit");
@@ -206,16 +207,42 @@ async function add(event) {
         stocknewslist = [];
         for (var j = 0; j < stocknews.articles.length; j++) {
             stocknewslist.push(stocknews.articles[j].title);
-
         }
-        console.log(stocknewslist)
-        //Puting news in to stock list
+        // test on adding NLP
+        toxicity.load(threshold).then(model => {
+            model.classify(stocknewslist).then(predictions => {
 
-        stocknewslist.forEach((item) => {
-            let li = document.createElement("li");
-            li.innerText = item;
-            list.appendChild(li);
+                console.log(predictions);
+
+            });
         });
+        // Load the model for relationship with stock
+        use.loadQnA().then(model => {
+
+            const input = {
+                queries: ['Is stock going to perform well?'],
+                responses: stocknewslist
+            };
+
+            const embeddings = model.embed(input);
+
+            const scores = tf.matMul(embeddings['queryEmbedding'],
+                embeddings['responseEmbedding'], false, true).dataSync();
+            console.log(scores)
+            for (i = 0; i < scores.length; i++) {
+                stocknewslist[i] += "(" + Math.round(scores[i]).toString() + ")"
+            }
+            //Puting news in to stock list
+
+            stocknewslist.forEach((item) => {
+                let li = document.createElement("li");
+                li.innerText = item;
+                list.appendChild(li);
+            });
+        });
+
+        console.log(stocknewslist)
+
         //Save stock and rev start with renew both table
 
         savedStockandrev = JSON.parse(localStorage.getItem('savedStockwithrev'));
@@ -433,7 +460,7 @@ function onlyLetters(str) {
 //Date getter
 function dategetter() {
     var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0') - 1;
+    var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = today.getFullYear();
 
@@ -544,8 +571,6 @@ let killall = document.getElementById("killswitch");
 killall.addEventListener("click", function (event) {
     localStorage.clear();
 });
-
-
 
 
 
